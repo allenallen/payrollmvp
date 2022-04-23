@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -85,7 +84,7 @@ public class EmployeesController implements Initializable {
                                 loader.getNamespace().put("employeeId", employee.getId().getValue());
                                 loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
                                 try {
-                                    Stage mainStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                                    Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                     mainStage.setTitle("Add Employee");
                                     mainStage.setScene(new Scene(loader.load()));
                                     mainStage.show();
@@ -143,7 +142,17 @@ public class EmployeesController implements Initializable {
     }
 
     @FXML
-    public void onAddEmployeeMenuItemClicked() {
-
+    public void onAddEmployeeMenuItemClicked(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.getNamespace().put("employeeId", "create");
+        loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
+        try {
+            Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+            mainStage.setTitle("Add Employee");
+            mainStage.setScene(new Scene(loader.load()));
+            mainStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

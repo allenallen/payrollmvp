@@ -1,5 +1,11 @@
 package com.tamaraw.payroll.models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 public class EmployeeDto {
 
     private int id;
@@ -79,6 +85,13 @@ public class EmployeeDto {
     }
 
     public String getBirthday() {
+        try {
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            return format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return birthday;
     }
 

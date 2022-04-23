@@ -46,7 +46,7 @@ public class AddEmployeeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String id = employeeIdLabel.getText();
-        if (!id.isBlank()) {
+        if (!id.equals("create")) {
             Employee employee = EmployeeDAO.getOne(id);
             this.firstName.setText(employee.getFirstName().getValue());
             this.lastName.setText(employee.getLastName().getValue());
@@ -67,6 +67,7 @@ public class AddEmployeeController implements Initializable {
 
     @FXML
     public void onSaveClick(ActionEvent event) throws IOException {
+        String employeeId = this.employeeIdLabel.getText();
         EmployeeDto dto = new EmployeeDto(
                 this.firstName.getText(),
                 this.lastName.getText(),
@@ -74,10 +75,14 @@ public class AddEmployeeController implements Initializable {
                 this.address.getText(),
                 this.contactNumber.getText(),
                 this.birthday.getEditor().getText(),
-                Integer.parseInt(this.employeeIdLabel.getText())
+                employeeId.equals("create") ? 0 : Integer.parseInt(employeeId)
         );
         try {
-            EmployeeDAO.update(dto);
+            if (employeeId.equals("create")) {
+                EmployeeDAO.create(dto);
+            } else {
+                EmployeeDAO.update(dto);
+            }
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
             Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainStage.setTitle("Employees");
