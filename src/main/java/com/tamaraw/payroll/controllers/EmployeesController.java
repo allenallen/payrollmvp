@@ -3,6 +3,7 @@ package com.tamaraw.payroll.controllers;
 import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
+import com.tamaraw.payroll.utils.Notification;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,15 +11,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EmployeesController implements Initializable {
@@ -54,6 +53,38 @@ public class EmployeesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeTable();
+    }
+
+    @FXML
+    public void onCloseMenuItemClicked(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
+        Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+        mainStage.setTitle("Main");
+        mainStage.setScene(new Scene(fxmlLoader.load()));
+    }
+
+    @FXML
+    public void onAddEmployeeMenuItemClicked() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.getNamespace().put("employeeId", "create");
+        loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
+        try {
+            Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+            mainStage.setTitle("Add Employee");
+            mainStage.setScene(new Scene(loader.load()));
+            mainStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void onCompensationSettingsClicked() {
+
+    }
+
+    private void initializeTable() {
         ObservableList<Employee> employees = EmployeeDAO.getAll();
         this.tableColumnId.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnEmployeeNumber.setCellValueFactory(d -> d.getValue().getEmployeeNumber().asObject());
@@ -116,7 +147,14 @@ public class EmployeesController implements Initializable {
                         } else {
                             btn.setOnAction(event -> {
                                 Employee employee = getTableView().getItems().get(getIndex());
-                                System.out.println("DELETE: " + employee.getId());
+                                Optional<ButtonType> result = Notification.callAlert(Alert.AlertType.CONFIRMATION,
+                                        "Are you sure you want to delete employee?");
+                                if (result.isPresent()) {
+                                    if (result.get().equals(ButtonType.OK)) {
+                                        EmployeeDAO.delete(employee.getId().getValue());
+                                        initializeTable();
+                                    }
+                                }
                             });
                             setGraphic(btn);
                             setText(null);
@@ -131,28 +169,5 @@ public class EmployeesController implements Initializable {
         this.tableColumnDeleteBtn.setCellFactory(deleteCallBack);
 
         this.tableViewEmployees.setItems(employees);
-    }
-
-    @FXML
-    public void onCloseMenuItemClicked(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
-        Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
-        mainStage.setTitle("Main");
-        mainStage.setScene(new Scene(fxmlLoader.load()));
-    }
-
-    @FXML
-    public void onAddEmployeeMenuItemClicked(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.getNamespace().put("employeeId", "create");
-        loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
-        try {
-            Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
-            mainStage.setTitle("Add Employee");
-            mainStage.setScene(new Scene(loader.load()));
-            mainStage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -78,4 +78,10 @@ public class EmployeeDAO {
         DBUtil.dbExecuteUpdate(stmt);
         DBUtil.disconnectDb();
     }
+
+    public static void delete(int id) {
+        String stmt = String.format("DELETE FROM %s WHERE ID = '%s'", TABLE_NAME, id);
+        DBUtil.dbExecuteUpdate(stmt);
+        DBUtil.disconnectDb();
+    }
 }
