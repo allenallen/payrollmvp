@@ -16,6 +16,7 @@ public class MainController {
     public void onEmployeesBtnClicked(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
         Stage mainStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        mainStage.setResizable(false);
         mainStage.setTitle("Employees");
         mainStage.setScene(new Scene(fxmlLoader.load()));
     }

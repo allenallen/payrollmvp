@@ -60,6 +60,7 @@ public class EmployeesController implements Initializable {
     public void onCloseMenuItemClicked(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
         Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+        mainStage.setResizable(false);
         mainStage.setTitle("Main");
         mainStage.setScene(new Scene(fxmlLoader.load()));
     }
@@ -71,6 +72,7 @@ public class EmployeesController implements Initializable {
         loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
         try {
             Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+            mainStage.setResizable(false);
             mainStage.setTitle("Add Employee");
             mainStage.setScene(new Scene(loader.load()));
             mainStage.show();
@@ -83,6 +85,7 @@ public class EmployeesController implements Initializable {
     public void onCompensationSettingsClicked() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employeeCompensation.fxml"));
         Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+        mainStage.setResizable(false);
         mainStage.setTitle("Employee Compensation");
         mainStage.setScene(new Scene(fxmlLoader.load()));
     }
@@ -119,6 +122,7 @@ public class EmployeesController implements Initializable {
                                 loader.setLocation(HelloApplication.class.getResource("controllers/addEmployee.fxml"));
                                 try {
                                     Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                    mainStage.setResizable(false);
                                     mainStage.setTitle("Add Employee");
                                     mainStage.setScene(new Scene(loader.load()));
                                     mainStage.show();

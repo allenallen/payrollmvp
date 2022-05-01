@@ -236,6 +236,7 @@ public class EmployeeCompensationController implements Initializable {
     public void onMenuItemCloseClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
         Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+        mainStage.setResizable(false);
         mainStage.setTitle("Employees");
         mainStage.setScene(new Scene(fxmlLoader.load()));
     }

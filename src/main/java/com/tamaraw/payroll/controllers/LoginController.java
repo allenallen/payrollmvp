@@ -31,6 +31,7 @@ public class LoginController {
         if (username.equals(user.getUserName()) && password.equals(user.getPassword())) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
             Stage mainStage = (Stage) this.username.getScene().getWindow();
+            mainStage.setResizable(false);
             mainStage.setTitle("Home");
             mainStage.setScene(new Scene(fxmlLoader.load()));
         } else {
