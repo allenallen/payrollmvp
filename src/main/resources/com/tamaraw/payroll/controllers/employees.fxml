@@ -37,6 +37,6 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="519.0" layoutY="464.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="162.0" text="Compensation Settings" />
+      <Button layoutX="519.0" layoutY="464.0" mnemonicParsing="false" onAction="#onCompensationSettingsClicked" prefHeight="35.0" prefWidth="162.0" text="Compensation Settings" />
    </children>
 </AnchorPane>

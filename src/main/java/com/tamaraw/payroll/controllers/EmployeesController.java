@@ -80,8 +80,11 @@ public class EmployeesController implements Initializable {
     }
 
     @FXML
-    public void onCompensationSettingsClicked() {
-
+    public void onCompensationSettingsClicked() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employeeCompensation.fxml"));
+        Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
+        mainStage.setTitle("Employee Compensation");
+        mainStage.setScene(new Scene(fxmlLoader.load()));
     }
 
     private void initializeTable() {

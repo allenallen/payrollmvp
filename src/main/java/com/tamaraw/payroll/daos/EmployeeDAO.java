@@ -61,27 +61,24 @@ public class EmployeeDAO {
     }
 
     public static void update(EmployeeDto dto) {
-        String stmt = String.format("UPDATE %s SET %s = '%s', %s = '%s', %s = '%s', %s = '%s', %s = %d, %s = '%s' WHERE %s = '%s'",
+        DBUtil.executeQuery("UPDATE %s SET %s = '%s', %s = '%s', %s = '%s', %s = '%s', %s = %d, %s = '%s' WHERE %s = '%s'",
                 TABLE_NAME, FIRST_NAME_COLUMN, dto.getFirstName(), LAST_NAME_COLUMN, dto.getLastName(),
                 ADDRESS_COLUMN, dto.getAddress(), CONTACT_NUMBER_COLUMN, dto.getContactNumber(),
                 EMPLOYEE_NUMBER_COLUMN, dto.getEmployeeNumber(), BIRTHDAY_COLUMN, dto.getBirthday(),
                 ID_COLUMN, dto.getId());
-        DBUtil.dbExecuteUpdate(stmt);
-        DBUtil.disconnectDb();
     }
 
     public static void create(EmployeeDto dto) {
-        String stmt = String.format("INSERT INTO \"%s\" (%s,%s,%s,%s,%s,%s) VALUES ('%s','%s','%s','%s',%d,'%s')",
+        long id = DBUtil.executeQueryReturnId("INSERT INTO \"%s\" (%s,%s,%s,%s,%s,%s) VALUES ('%s','%s','%s','%s',%d,'%s')",
                 TABLE_NAME, FIRST_NAME_COLUMN, LAST_NAME_COLUMN, ADDRESS_COLUMN, CONTACT_NUMBER_COLUMN,
                 EMPLOYEE_NUMBER_COLUMN, BIRTHDAY_COLUMN, dto.getFirstName(), dto.getLastName(),
                 dto.getAddress(), dto.getContactNumber(), dto.getEmployeeNumber(), dto.getBirthday());
-        DBUtil.dbExecuteUpdate(stmt);
-        DBUtil.disconnectDb();
+        DBUtil.executeQuery("INSERT INTO \"%s\" (%s,%s) VALUES (%d,%f)", EmployeeCompensationDAO.TABLE_NAME,
+                EmployeeCompensationDAO.EMPLOYEE_ID_COLUMN, EmployeeCompensationDAO.DAILY_COLUMN,
+                id, 0.00);
     }
 
     public static void delete(int id) {
-        String stmt = String.format("DELETE FROM %s WHERE ID = '%s'", TABLE_NAME, id);
-        DBUtil.dbExecuteUpdate(stmt);
-        DBUtil.disconnectDb();
+        DBUtil.executeQuery("DELETE FROM %s WHERE ID = '%s'", TABLE_NAME, id);
     }
 }

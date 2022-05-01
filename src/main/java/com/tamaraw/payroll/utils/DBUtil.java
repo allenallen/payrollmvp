@@ -49,6 +49,49 @@ public class DBUtil {
         }
     }
 
+    public static long dbExecuteUpdateReturnGeneratedID(String query) {
+        Statement statement = null;
+        long id = 0;
+        try {
+            connectDb();
+            statement = conn.createStatement();
+            statement.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKey = statement.getGeneratedKeys();
+            if (generatedKey.next()) {
+                id = generatedKey.getLong(1);
+            }
+            conn.commit();
+        } catch (DBException e) {
+            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                disconnectDb();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return id;
+    }
+
+    public static void executeQuery(String query, Object... args) {
+        String stmt = String.format(query, args);
+        dbExecuteUpdate(stmt);
+        disconnectDb();
+    }
+
+    public static long executeQueryReturnId(String query, Object... args) {
+        String stmt = String.format(query, args);
+        long id = dbExecuteUpdateReturnGeneratedID(stmt);
+        disconnectDb();
+        return id;
+    }
+
     private static void connectDb() throws DBException, SQLException {
         if (conn == null || conn.isClosed()) {
             try {
