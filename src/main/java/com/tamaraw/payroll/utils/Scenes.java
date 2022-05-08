@@ -1,0 +1,5 @@
+package com.tamaraw.payroll.utils;
+
+public enum Scenes {
+    MAIN, EMPLOYEES, ADD_EMPLOYEES, EMPLOYEE_COMPENSATION, SETTINGS, DEDUCTION_TYPES, ADD_DEDUCTION_TYPES
+}
