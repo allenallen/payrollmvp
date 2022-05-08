@@ -3,6 +3,8 @@ package com.tamaraw.payroll.controllers;
 import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.daos.UserDAO;
 import com.tamaraw.payroll.models.User;
+import com.tamaraw.payroll.utils.SceneLoader;
+import com.tamaraw.payroll.utils.Scenes;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,11 +31,7 @@ public class LoginController {
         String password = this.password.getText();
         User user = UserDAO.getSuperUser();
         if (username.equals(user.getUserName()) && password.equals(user.getPassword())) {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
-            Stage mainStage = (Stage) this.username.getScene().getWindow();
-            mainStage.setResizable(false);
-            mainStage.setTitle("Home");
-            mainStage.setScene(new Scene(fxmlLoader.load()));
+            SceneLoader.loadScene((Stage) this.username.getScene().getWindow(), Scenes.MAIN);
         } else {
             label.setText("Wrong password!");
             label.setVisible(true);

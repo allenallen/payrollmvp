@@ -5,6 +5,8 @@ import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeDto;
 import com.tamaraw.payroll.utils.DBUtil;
+import com.tamaraw.payroll.utils.SceneLoader;
+import com.tamaraw.payroll.utils.Scenes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,11 +61,7 @@ public class AddEmployeeController implements Initializable {
 
     @FXML
     public void onCancelBtnClick(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
-        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        mainStage.setResizable(false);
-        mainStage.setTitle("Employees");
-        mainStage.setScene(new Scene(fxmlLoader.load()));
+        SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
     }
 
     @FXML
@@ -84,11 +82,7 @@ public class AddEmployeeController implements Initializable {
             } else {
                 EmployeeDAO.update(dto);
             }
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
-            Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            mainStage.setResizable(false);
-            mainStage.setTitle("Employees");
-            mainStage.setScene(new Scene(fxmlLoader.load()));
+            SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
         } catch (Exception e) {
             e.printStackTrace();
         }

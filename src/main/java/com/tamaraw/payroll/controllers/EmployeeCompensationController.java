@@ -7,6 +7,8 @@ import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeCompensation;
 import com.tamaraw.payroll.models.EmployeeCompensationDto;
 import com.tamaraw.payroll.utils.Notification;
+import com.tamaraw.payroll.utils.SceneLoader;
+import com.tamaraw.payroll.utils.Scenes;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -62,7 +64,7 @@ public class EmployeeCompensationController implements Initializable {
         this.tableColumnName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastName().getValue() + ", " +
                 d.getValue().getFirstName().getValue()));
 
-        Callback<TableColumn<Employee, Double>, TableCell<Employee, Double>> dailyCallBack = new Callback<TableColumn<Employee, Double>, TableCell<Employee, Double>>() {
+        Callback<TableColumn<Employee, Double>, TableCell<Employee, Double>> dailyCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Double> call(TableColumn<Employee, Double> employeeDoubleTableColumn) {
                 final TableCell<Employee, Double> cell = new TableCell<>() {
@@ -105,7 +107,7 @@ public class EmployeeCompensationController implements Initializable {
         this.tableColumnDaily.setCellFactory(dailyCallBack);
         this.tableColumnDaily.setEditable(true);
 
-        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> sssCallBack = new Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>>() {
+        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> sssCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Boolean> call(TableColumn<Employee, Boolean> employeeBooleanTableColumn) {
                 final TableCell<Employee, Boolean> cell = new TableCell<>() {
@@ -144,7 +146,7 @@ public class EmployeeCompensationController implements Initializable {
                 return cell;
             }
         };
-        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> pagibigCallBack = new Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>>() {
+        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> pagibigCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Boolean> call(TableColumn<Employee, Boolean> employeeBooleanTableColumn) {
                 final TableCell<Employee, Boolean> cell = new TableCell<>() {
@@ -183,7 +185,7 @@ public class EmployeeCompensationController implements Initializable {
                 return cell;
             }
         };
-        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> philHealthCallBack = new Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>>() {
+        Callback<TableColumn<Employee, Boolean>, TableCell<Employee, Boolean>> philHealthCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Boolean> call(TableColumn<Employee, Boolean> employeeBooleanTableColumn) {
                 final TableCell<Employee, Boolean> cell = new TableCell<>() {
@@ -234,11 +236,7 @@ public class EmployeeCompensationController implements Initializable {
 
     @FXML
     public void onMenuItemCloseClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/employees.fxml"));
-        Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
-        mainStage.setResizable(false);
-        mainStage.setTitle("Employees");
-        mainStage.setScene(new Scene(fxmlLoader.load()));
+        SceneLoader.loadScene((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.EMPLOYEES);
     }
 
     private void updateEmployee(Employee employee) {
