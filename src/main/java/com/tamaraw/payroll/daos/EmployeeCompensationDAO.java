@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeCompensationDAO {
-
     public static final String TABLE_NAME = "EMPLOYEE_COMPENSATION";
     public static final String EMPLOYEE_ID_COLUMN = "EMPLOYEE_ID";
     public static final String DAILY_COLUMN = "DAILY";

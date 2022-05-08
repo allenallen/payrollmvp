@@ -27,7 +27,7 @@
             <Insets top="20.0" />
          </VBox.margin>
       </Button>
-      <Button mnemonicParsing="false" prefWidth="250.0" text="Settings">
+      <Button mnemonicParsing="false" onAction="#onSettingsBtnClicked" prefWidth="250.0" text="Settings">
          <VBox.margin>
             <Insets top="20.0" />
          </VBox.margin>
