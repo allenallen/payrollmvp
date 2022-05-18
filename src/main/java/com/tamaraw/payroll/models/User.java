@@ -17,6 +17,11 @@ public class User extends BaseDBObject<User>{
         this.setPassword(rs.getString(UserDAO.PASSWORD_COLUMN));
     }
 
+    public User(UserDto dto) {
+        this.setUserName(dto.getUsername());
+        this.setPassword(dto.getPassword());
+    }
+
     public String getUserName() {
         return userName.get();
     }
