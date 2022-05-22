@@ -29,7 +29,7 @@ public class LoginController {
         String username = this.username.getText();
         String password = this.password.getText();
 
-        UserService userService = new UserService(APIDefinitions.USER_API);
+        UserService userService = new UserService();
         User user = userService.getUser(username);
         if (username.equals(user.getUserName()) && password.equals(user.getPassword())) {
             SceneLoader.loadScene((Stage) this.username.getScene().getWindow(), Scenes.MAIN);

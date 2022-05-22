@@ -7,11 +7,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.models.User;
 import com.tamaraw.payroll.models.UserDto;
+import com.tamaraw.payroll.utils.APIDefinitions;
 
 public class UserService extends HttpService {
 
-    public UserService(String apiUrl) {
-        super(apiUrl);
+    public UserService() {
+        super(APIDefinitions.USER_API);
     }
 
     public User getUser(String username) throws UnirestException {
