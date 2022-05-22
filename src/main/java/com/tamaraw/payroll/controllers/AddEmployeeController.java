@@ -4,6 +4,7 @@ import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeDto;
+import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.DBUtil;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
@@ -45,8 +46,11 @@ public class AddEmployeeController implements Initializable {
     @FXML
     private DatePicker birthday;
 
+    private EmployeeService employeeService;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.employeeService = new EmployeeService();
         String id = employeeIdLabel.getText();
         if (!id.equals("create")) {
             Employee employee = EmployeeDAO.getOne(id);
@@ -76,9 +80,11 @@ public class AddEmployeeController implements Initializable {
                 this.birthday.getEditor().getText(),
                 employeeId.equals("create") ? 0 : Integer.parseInt(employeeId)
         );
+        dto.setParsedBirthday(this.birthday.getEditor().getText());
         try {
+            System.out.println(employeeId);
             if (employeeId.equals("create")) {
-                EmployeeDAO.create(dto);
+                employeeService.create(dto);
             } else {
                 EmployeeDAO.update(dto);
             }

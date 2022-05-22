@@ -1,8 +1,10 @@
 package com.tamaraw.payroll.controllers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
+import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
@@ -53,9 +55,17 @@ public class EmployeesController implements Initializable {
     @FXML
     private TableColumn<Employee, Integer> tableColumnDeleteBtn;
 
+    private EmployeeService employeeService;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeTable();
+        this.employeeService = new EmployeeService();
+        try {
+            initializeTable();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -77,8 +87,8 @@ public class EmployeesController implements Initializable {
         SceneLoader.loadScene((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.EMPLOYEE_COMPENSATION);
     }
 
-    private void initializeTable() {
-        ObservableList<Employee> employees = EmployeeDAO.getAll();
+    private void initializeTable() throws UnirestException {
+        ObservableList<Employee> employees = employeeService.getEmployees();
         this.tableColumnId.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnEmployeeNumber.setCellValueFactory(d -> d.getValue().getEmployeeNumber().asObject());
         this.tableColumnFirstName.setCellValueFactory(d -> d.getValue().getFirstName());
@@ -140,7 +150,12 @@ public class EmployeesController implements Initializable {
                                 if (result.isPresent()) {
                                     if (result.get().equals(ButtonType.OK)) {
                                         EmployeeDAO.delete(employee.getId().getValue());
-                                        initializeTable();
+                                        try {
+                                            initializeTable();
+                                        } catch (UnirestException e) {
+                                            e.printStackTrace();
+                                            throw new RuntimeException(e);
+                                        }
                                     }
                                 }
                             });

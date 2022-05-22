@@ -84,14 +84,17 @@ public class EmployeeDto {
         this.contactNumber = contactNumber;
     }
 
-    public String getBirthday() {
+    public void setParsedBirthday(String fxmlBirthday) {
         try {
             Date date = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            return format.format(date);
+            this.birthday = format.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getBirthday() {
         return birthday;
     }
 

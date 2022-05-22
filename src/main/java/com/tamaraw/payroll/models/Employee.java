@@ -21,6 +21,16 @@ public class Employee{
     private IntegerProperty id = new SimpleIntegerProperty();
     private ObjectProperty<EmployeeCompensation> employeeCompensation = new SimpleObjectProperty<>();
 
+    public Employee(EmployeeDto dto) {
+        this.setFirstName(dto.getFirstName());
+        this.setLastName(dto.getLastName());
+        this.setAddress(dto.getAddress());
+        this.setBirthday(dto.getBirthday());
+        this.setEmployeeNumber(dto.getEmployeeNumber());
+        this.setId(dto.getId());
+        this.setContactNumber(dto.getContactNumber());
+    }
+
     public Employee(ResultSet rs) throws SQLException {
         this.setFirstName(rs.getString(EmployeeDAO.FIRST_NAME_COLUMN));
         this.setLastName(rs.getString(EmployeeDAO.LAST_NAME_COLUMN));
