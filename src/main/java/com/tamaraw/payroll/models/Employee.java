@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Employee{
+public class Employee {
 
     private StringProperty firstName = new SimpleStringProperty();
     private StringProperty lastName = new SimpleStringProperty();
@@ -25,7 +25,15 @@ public class Employee{
         this.setFirstName(dto.getFirstName());
         this.setLastName(dto.getLastName());
         this.setAddress(dto.getAddress());
-        this.setBirthday(dto.getBirthday());
+
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dto.getBirthday());
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            this.setBirthday(format.format(date));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
         this.setEmployeeNumber(dto.getEmployeeNumber());
         this.setId(dto.getId());
         this.setContactNumber(dto.getContactNumber());

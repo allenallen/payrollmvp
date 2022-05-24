@@ -1,11 +1,13 @@
 package com.tamaraw.payroll.controllers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeDto;
 import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.DBUtil;
+import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
 import javafx.event.ActionEvent;
@@ -53,13 +55,18 @@ public class AddEmployeeController implements Initializable {
         this.employeeService = new EmployeeService();
         String id = employeeIdLabel.getText();
         if (!id.equals("create")) {
-            Employee employee = EmployeeDAO.getOne(id);
-            this.firstName.setText(employee.getFirstName().getValue());
-            this.lastName.setText(employee.getLastName().getValue());
-            this.employeeNumber.setText(String.valueOf(employee.getEmployeeNumber().getValue()));
-            this.contactNumber.setText(employee.getContactNumber().getValue());
-            this.address.setText(employee.getAddress().getValue());
-            this.birthday.getEditor().setText(employee.getBirthday().getValue());
+            Employee employee = null;
+            try {
+                employee = employeeService.getEmployee(Long.valueOf(id));
+                this.firstName.setText(employee.getFirstName().getValue());
+                this.lastName.setText(employee.getLastName().getValue());
+                this.employeeNumber.setText(String.valueOf(employee.getEmployeeNumber().getValue()));
+                this.contactNumber.setText(employee.getContactNumber().getValue());
+                this.address.setText(employee.getAddress().getValue());
+                this.birthday.getEditor().setText(employee.getBirthday().getValue());
+            } catch (UnirestException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -84,13 +91,22 @@ public class AddEmployeeController implements Initializable {
         try {
             System.out.println(employeeId);
             if (employeeId.equals("create")) {
-                employeeService.create(dto);
+                try {
+                    employeeService.create(dto);
+                    SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
+                } catch (UnirestException e) {
+                    Notification.toast(e.getMessage(), ((Node) event.getSource()).getScene().getWindow());
+                }
             } else {
-                EmployeeDAO.update(dto);
+                try {
+                    employeeService.update(dto);
+                    SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
+                } catch (UnirestException e) {
+                    Notification.toast(e.getMessage(), ((Node) event.getSource()).getScene().getWindow());
+                }
             }
-            SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
         } catch (Exception e) {
-            e.printStackTrace();
+            Notification.toast(e.getMessage(), ((Node) event.getSource()).getScene().getWindow());
         }
     }
 }

@@ -149,7 +149,12 @@ public class EmployeesController implements Initializable {
                                         "Are you sure you want to delete employee?");
                                 if (result.isPresent()) {
                                     if (result.get().equals(ButtonType.OK)) {
-                                        EmployeeDAO.delete(employee.getId().getValue());
+                                        try {
+                                            employeeService.delete((long) employee.getId().getValue());
+                                            Notification.toast("Successfully deleted", this.getTableView());
+                                        } catch (UnirestException e) {
+                                            Notification.toast(e.getMessage(), this.getTableView());
+                                        }
                                         try {
                                             initializeTable();
                                         } catch (UnirestException e) {
