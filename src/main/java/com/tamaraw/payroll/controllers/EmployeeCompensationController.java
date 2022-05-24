@@ -1,28 +1,26 @@
 package com.tamaraw.payroll.controllers;
 
-import com.tamaraw.payroll.HelloApplication;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.daos.EmployeeCompensationDAO;
-import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeCompensation;
 import com.tamaraw.payroll.models.EmployeeCompensationDto;
+import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -49,9 +47,17 @@ public class EmployeeCompensationController implements Initializable {
     @FXML
     private TableColumn<Employee, Boolean> tableColumnPhilHealth;
 
+    private EmployeeService employeeService;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Employee> employees = EmployeeDAO.getAll();
+        this.employeeService = new EmployeeService();
+        ObservableList<Employee> employees;
+        try {
+            employees = employeeService.getEmployees();
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
         ObservableList<EmployeeCompensation> employeeCompensations = EmployeeCompensationDAO.getAll();
         employees.forEach(employee -> {
             Optional<EmployeeCompensation> employeeCompensation = employeeCompensations.stream()

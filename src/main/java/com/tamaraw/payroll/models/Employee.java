@@ -1,10 +1,7 @@
 package com.tamaraw.payroll.models;
 
-import com.tamaraw.payroll.daos.EmployeeDAO;
 import javafx.beans.property.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,18 +34,6 @@ public class Employee {
         this.setEmployeeNumber(dto.getEmployeeNumber());
         this.setId(dto.getId());
         this.setContactNumber(dto.getContactNumber());
-    }
-
-    public Employee(ResultSet rs) throws SQLException {
-        this.setFirstName(rs.getString(EmployeeDAO.FIRST_NAME_COLUMN));
-        this.setLastName(rs.getString(EmployeeDAO.LAST_NAME_COLUMN));
-        this.setAddress(rs.getString(EmployeeDAO.ADDRESS_COLUMN));
-        this.setContactNumber(rs.getString(EmployeeDAO.CONTACT_NUMBER_COLUMN));
-        Date dbDate = rs.getDate(EmployeeDAO.BIRTHDAY_COLUMN);
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        this.setBirthday(format.format(dbDate));
-        this.setEmployeeNumber(rs.getInt(EmployeeDAO.EMPLOYEE_NUMBER_COLUMN));
-        this.setId(rs.getInt(EmployeeDAO.ID_COLUMN));
     }
 
     public ObjectProperty<EmployeeCompensation> getEmployeeCompensation() {

@@ -1,21 +1,16 @@
 package com.tamaraw.payroll.controllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.tamaraw.payroll.HelloApplication;
-import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeDto;
 import com.tamaraw.payroll.services.EmployeeService;
-import com.tamaraw.payroll.utils.DBUtil;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

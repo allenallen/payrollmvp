@@ -2,7 +2,6 @@ package com.tamaraw.payroll.controllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.HelloApplication;
-import com.tamaraw.payroll.daos.EmployeeDAO;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.Notification;
