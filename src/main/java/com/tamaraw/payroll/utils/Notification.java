@@ -8,6 +8,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.util.Optional;
@@ -30,7 +31,21 @@ public class Notification {
         popup.show(stage);
 
         new Timeline(new KeyFrame(
-                Duration.millis(1000),
+                Duration.millis(3000),
+                ae -> popup.hide())).play();
+    }
+
+    public static void toast(String message, Window window) {
+        Stage stage = (Stage) window;
+        final Popup popup = createPopup(message);
+        popup.setOnShown(e -> {
+            popup.setX(stage.getX() + stage.getWidth() / 2 - popup.getWidth() / 2);
+            popup.setY(stage.getY() + stage.getHeight() / 1.2 - popup.getHeight() / 2);
+        });
+        popup.show(stage);
+
+        new Timeline(new KeyFrame(
+                Duration.millis(3000),
                 ae -> popup.hide())).play();
     }
 
