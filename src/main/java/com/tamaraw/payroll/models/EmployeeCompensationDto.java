@@ -5,15 +5,26 @@ public class EmployeeCompensationDto {
     private int id;
     private double daily;
     private boolean sss;
-    private boolean philHealth;
+    private boolean philhealth;
     private boolean pagibig;
 
-    public EmployeeCompensationDto(int id, double daily, boolean sss, boolean philHealth, boolean pagibig) {
+    private EmployeeDto employee;
+
+    public EmployeeCompensationDto(int id, double daily, boolean sss, boolean philhealth, boolean pagibig, EmployeeDto employeeDto) {
         this.id = id;
         this.daily = daily;
         this.sss = sss;
-        this.philHealth = philHealth;
+        this.philhealth = philhealth;
         this.pagibig = pagibig;
+        this.employee = employeeDto;
+    }
+
+    public EmployeeDto getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(EmployeeDto employee) {
+        this.employee = employee;
     }
 
     public int getId() {
@@ -40,12 +51,12 @@ public class EmployeeCompensationDto {
         this.sss = sss;
     }
 
-    public boolean isPhilHealth() {
-        return philHealth;
+    public boolean isPhilhealth() {
+        return philhealth;
     }
 
-    public void setPhilHealth(boolean philHealth) {
-        this.philHealth = philHealth;
+    public void setPhilhealth(boolean philhealth) {
+        this.philhealth = philhealth;
     }
 
     public boolean isPagibig() {

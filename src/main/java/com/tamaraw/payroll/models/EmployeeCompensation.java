@@ -1,10 +1,6 @@
 package com.tamaraw.payroll.models;
 
-import com.tamaraw.payroll.daos.EmployeeCompensationDAO;
 import javafx.beans.property.*;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class EmployeeCompensation {
 
@@ -15,13 +11,23 @@ public class EmployeeCompensation {
     private BooleanProperty philHealth = new SimpleBooleanProperty();
     private BooleanProperty pagibig = new SimpleBooleanProperty();
 
-    public EmployeeCompensation(ResultSet rs) throws SQLException {
-        this.setId(rs.getInt(EmployeeCompensationDAO.EMPLOYEE_ID_COLUMN));
-        this.setEmployeeId(rs.getInt(EmployeeCompensationDAO.EMPLOYEE_ID_COLUMN));
-        this.setDaily(rs.getDouble(EmployeeCompensationDAO.DAILY_COLUMN));
-        this.setSss(rs.getBoolean(EmployeeCompensationDAO.SSS_COLUMN));
-        this.setPhilHealth(rs.getBoolean(EmployeeCompensationDAO.PHILHEALTH_COLUMN));
-        this.setPagibig(rs.getBoolean(EmployeeCompensationDAO.PAGIBIG_COLUMN));
+    private ObjectProperty<Employee> employee = new SimpleObjectProperty<>();
+
+    public EmployeeCompensation(EmployeeCompensationDto dto) {
+        this.setId(dto.getId());
+        this.setEmployee(new Employee(dto.getEmployee()));
+        this.setDaily(dto.getDaily());
+        this.setSss(dto.isSss());
+        this.setPagibig(dto.isPagibig());
+        this.setPhilHealth(dto.isPhilhealth());
+    }
+
+    public ObjectProperty<Employee> getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee.set(employee);
     }
 
     public IntegerProperty getId() {
