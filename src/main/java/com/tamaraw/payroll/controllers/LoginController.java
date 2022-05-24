@@ -25,17 +25,23 @@ public class LoginController {
     private Label label;
 
     @FXML
-    protected void onLoginBtnClicked() throws IOException, UnirestException {
+    protected void onLoginBtnClicked() throws IOException{
         String username = this.username.getText();
         String password = this.password.getText();
 
         UserService userService = new UserService();
-        User user = userService.getUser(username);
-        if (username.equals(user.getUserName()) && password.equals(user.getPassword())) {
-            SceneLoader.loadScene((Stage) this.username.getScene().getWindow(), Scenes.MAIN);
-        } else {
-            label.setText("Wrong password!");
+        try {
+            User user = userService.getUser(username);
+            if (username.equals(user.getUserName()) && password.equals(user.getPassword())) {
+                SceneLoader.loadScene((Stage) this.username.getScene().getWindow(), Scenes.MAIN);
+            } else {
+                label.setText("Wrong password!");
+                label.setVisible(true);
+            }
+        } catch (UnirestException e) {
+            label.setText(e.getMessage());
             label.setVisible(true);
         }
+
     }
 }
