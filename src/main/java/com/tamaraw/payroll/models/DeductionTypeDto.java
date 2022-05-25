@@ -10,6 +10,11 @@ public class DeductionTypeDto {
         this.type = type;
     }
 
+    public DeductionTypeDto(DeductionType deductionType) {
+        this.id = deductionType.getId().getValue();
+        this.type = deductionType.getType().getValue();
+    }
+
     public Long getId() {
         return id;
     }

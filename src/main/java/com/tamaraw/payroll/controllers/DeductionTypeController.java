@@ -1,8 +1,8 @@
 package com.tamaraw.payroll.controllers;
 
-import com.tamaraw.payroll.daos.DeductionTypeDAO;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.models.DeductionType;
-import com.tamaraw.payroll.models.Employee;
+import com.tamaraw.payroll.services.DeductionTypeService;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
 import com.tamaraw.payroll.utils.Scenes;
@@ -29,8 +29,11 @@ public class DeductionTypeController implements Initializable {
     @FXML
     private TableColumn<DeductionType, Long> tableColumnDelete;
 
+    private DeductionTypeService deductionTypeService;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.deductionTypeService = new DeductionTypeService();
         initializeTable();
     }
 
@@ -45,14 +48,19 @@ public class DeductionTypeController implements Initializable {
     }
 
     private void initializeTable() {
-        ObservableList<DeductionType> deductionTypes = DeductionTypeDAO.getAll();
+        ObservableList<DeductionType> deductionTypes;
+        try {
+            deductionTypes = deductionTypeService.getAll();
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
         this.tableColumnType.setCellValueFactory(d -> d.getValue().getType());
         this.tableColumnDelete.setCellValueFactory(d -> d.getValue().getId().asObject());
-        Callback<TableColumn<DeductionType,Long>, TableCell<DeductionType, Long>> deleteCallBack = new Callback<>() {
+        Callback<TableColumn<DeductionType, Long>, TableCell<DeductionType, Long>> deleteCallBack = new Callback<>() {
             @Override
             public TableCell<DeductionType, Long> call(TableColumn<DeductionType, Long> employeeLongTableColumn) {
                 final TableCell<DeductionType, Long> cell = new TableCell<>() {
-                  final Button btn = new Button("Delete");
+                    final Button btn = new Button("Delete");
 
                     @Override
                     protected void updateItem(Long aLong, boolean b) {
@@ -67,7 +75,11 @@ public class DeductionTypeController implements Initializable {
                                         "Are you sure you want to delete deduction type?");
                                 if (result.isPresent()) {
                                     if (result.get().equals(ButtonType.OK)) {
-                                        DeductionTypeDAO.delete(deductionType.getId().getValue());
+                                        try {
+                                            deductionTypeService.delete(deductionType.getId().getValue());
+                                        } catch (UnirestException e) {
+                                            Notification.toast(e.getMessage(), getTableView());
+                                        }
                                         initializeTable();
                                     }
                                 }

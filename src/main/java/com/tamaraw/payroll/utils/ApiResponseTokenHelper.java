@@ -1,10 +1,7 @@
 package com.tamaraw.payroll.utils;
 
 import com.google.gson.reflect.TypeToken;
-import com.tamaraw.payroll.models.ApiResponse;
-import com.tamaraw.payroll.models.EmployeeCompensationDto;
-import com.tamaraw.payroll.models.EmployeeDto;
-import com.tamaraw.payroll.models.UserDto;
+import com.tamaraw.payroll.models.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,5 +14,7 @@ public class ApiResponseTokenHelper {
     public static Type GENERIC_STRING = new TypeToken<ApiResponse<String>>(){}.getType();
     public static Type EMPLOYEE_COMPENSATION_LIST = new TypeToken<ApiResponse<List<EmployeeCompensationDto>>>(){}.getType();
     public static Type EMPLOYEE_COMPENSATION = new TypeToken<ApiResponse<EmployeeCompensationDto>>(){}.getType();
+    public static Type DEDUCTION_TYPE_LIST = new TypeToken<ApiResponse<List<DeductionTypeDto>>>(){}.getType();
+    public static Type DEDUCTION_TYPE = new TypeToken<ApiResponse<DeductionTypeDto>>(){}.getType();
 
 }

@@ -19,6 +19,11 @@ public class DeductionType {
         this.type = type;
     }
 
+    public DeductionType(DeductionTypeDto dto) {
+        setId(dto.getId());
+        setType(dto.getType());
+    }
+
     public DeductionType(ResultSet rs) throws SQLException {
         this.setId(rs.getLong(DeductionTypeDAO.ID_COLUMN));
         this.setType(rs.getString(DeductionTypeDAO.TYPE_COLUMN));
