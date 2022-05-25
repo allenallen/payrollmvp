@@ -94,7 +94,7 @@ public class AddEmployeeController implements Initializable {
                 }
             } else {
                 try {
-                    employeeService.update(dto);
+                    employeeService.update(dto, (long) dto.getId());
                     SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);
                 } catch (UnirestException e) {
                     Notification.toast(e.getMessage(), ((Node) event.getSource()).getScene().getWindow());

@@ -1,7 +1,6 @@
 package com.tamaraw.payroll.services;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -14,14 +13,13 @@ import com.tamaraw.payroll.utils.ApiResponseTokenHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EmployeeService extends HttpService{
+public class EmployeeService extends HttpService<EmployeeDto> {
     public EmployeeService() {
-        super(APIDefinitions.EMPLOYEE_API);
+        super(APIDefinitions.EMPLOYEE_API, ApiResponseTokenHelper.EMPLOYEE);
     }
 
     public Employee getEmployee(Long id) throws UnirestException {
@@ -42,39 +40,6 @@ public class EmployeeService extends HttpService{
             return FXCollections.observableList(employees);
         } else {
             return FXCollections.observableList(new ArrayList<>());
-        }
-    }
-
-    public void create(EmployeeDto dto) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.post(getUrl())
-                .header("Content-Type","application/json")
-                .body(new Gson().toJson(dto))
-                .asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<EmployeeDto> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.EMPLOYEE);
-            throw new UnirestException(res.getMessage());
-        }
-    }
-
-    public void update(EmployeeDto dto) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.put(getUrl() + dto.getId())
-                .header("Content-Type","application/json")
-                .body(new Gson().toJson(dto))
-                .asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<EmployeeDto> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.EMPLOYEE);
-            throw new UnirestException(res.getMessage());
-        }
-    }
-
-    public void delete(Long id) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.delete(getUrl() + id).asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<String> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.GENERIC_STRING);
-            throw new UnirestException(res.getMessage());
         }
     }
 }

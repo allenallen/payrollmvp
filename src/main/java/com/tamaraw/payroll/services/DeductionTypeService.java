@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DeductionTypeService extends HttpService{
+public class DeductionTypeService extends HttpService<DeductionTypeDto> {
     public DeductionTypeService() {
-        super(APIDefinitions.DEDUCTION_TYPE_API);
+        super(APIDefinitions.DEDUCTION_TYPE_API, ApiResponseTokenHelper.DEDUCTION_TYPE);
     }
 
     public ObservableList<DeductionType> getAll() throws UnirestException {
@@ -30,27 +30,6 @@ public class DeductionTypeService extends HttpService{
             return FXCollections.observableList(deductionTypeList);
         } else {
             return FXCollections.observableList(new ArrayList<>());
-        }
-    }
-
-    public void create(DeductionTypeDto dto) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.post(getUrl())
-                .header("Content-Type","application/json")
-                .body(new Gson().toJson(dto))
-                .asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<DeductionTypeDto> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.DEDUCTION_TYPE);
-            throw new UnirestException(res.getMessage());
-        }
-    }
-
-    public void delete(Long id) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.delete(getUrl() + id).asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<String> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.GENERIC_STRING);
-            throw new UnirestException(res.getMessage());
         }
     }
 }

@@ -3,7 +3,6 @@ package com.tamaraw.payroll.controllers;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.models.EmployeeCompensation;
 import com.tamaraw.payroll.models.EmployeeCompensationDto;
-import com.tamaraw.payroll.models.EmployeeDto;
 import com.tamaraw.payroll.services.EmployeeCompensationService;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
@@ -232,7 +231,7 @@ public class EmployeeCompensationController implements Initializable {
         EmployeeCompensationDto dto = new EmployeeCompensationDto(employee.getId().getValue(), employee.getDaily().getValue(),
                 employee.getSss().getValue(), employee.getPhilHealth().getValue(), employee.getPagibig().getValue(), null);
         try {
-            employeeCompensationService.update(dto);
+            employeeCompensationService.update(dto, (long) dto.getId());
         } catch (UnirestException e) {
             Notification.toast(e.getMessage(), this.tableViewEmployees);
         }

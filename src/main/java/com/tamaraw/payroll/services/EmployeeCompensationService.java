@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EmployeeCompensationService extends HttpService {
+public class EmployeeCompensationService extends HttpService<EmployeeCompensationDto> {
     public EmployeeCompensationService() {
-        super(APIDefinitions.EMPLOYEE_COMPENSATION_API);
+        super(APIDefinitions.EMPLOYEE_COMPENSATION_API, ApiResponseTokenHelper.EMPLOYEE_COMPENSATION);
     }
 
     public ObservableList<EmployeeCompensation> getAll() throws UnirestException {
@@ -30,18 +30,6 @@ public class EmployeeCompensationService extends HttpService {
             return FXCollections.observableList(employees);
         } else {
             return FXCollections.observableList(new ArrayList<>());
-        }
-    }
-
-    public void update(EmployeeCompensationDto dto) throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.put(getUrl())
-                .header("Content-Type", "application/json")
-                .body(new Gson().toJson(dto))
-                .asJson();
-
-        if (response.getStatus() == 500) {
-            ApiResponse<EmployeeCompensationDto> res = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.EMPLOYEE_COMPENSATION);
-            throw new UnirestException(res.getMessage());
         }
     }
 }

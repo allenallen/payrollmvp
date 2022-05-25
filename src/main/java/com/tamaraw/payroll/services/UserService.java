@@ -17,10 +17,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService extends HttpService {
+public class UserService extends HttpService<UserDto> {
 
     public UserService() {
-        super(APIDefinitions.USER_API);
+        super(APIDefinitions.USER_API, ApiResponseTokenHelper.USER);
     }
 
     public User getUser(String username) throws UnirestException {
