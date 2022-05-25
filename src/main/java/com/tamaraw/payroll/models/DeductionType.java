@@ -1,13 +1,9 @@
 package com.tamaraw.payroll.models;
 
-import com.tamaraw.payroll.daos.DeductionTypeDAO;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class DeductionType {
 
@@ -22,11 +18,6 @@ public class DeductionType {
     public DeductionType(DeductionTypeDto dto) {
         setId(dto.getId());
         setType(dto.getType());
-    }
-
-    public DeductionType(ResultSet rs) throws SQLException {
-        this.setId(rs.getLong(DeductionTypeDAO.ID_COLUMN));
-        this.setType(rs.getString(DeductionTypeDAO.TYPE_COLUMN));
     }
 
     public LongProperty getId() {
