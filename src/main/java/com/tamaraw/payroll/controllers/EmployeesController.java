@@ -106,11 +106,7 @@ public class EmployeesController implements Initializable {
 
     private void initializeTable() throws UnirestException {
         ObservableList<Employee> employees;
-        if (this.queryAll) {
-            employees = employeeService.getEmployees(true);
-        } else {
-            employees = employeeService.getEmployees(false);
-        }
+        employees = employeeService.getEmployees(this.queryAll);
         this.tableColumnId.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnEmployeeNumber.setCellValueFactory(d -> d.getValue().getEmployeeNumber().asObject());
         this.tableColumnFirstName.setCellValueFactory(d -> d.getValue().getFirstName());
@@ -161,14 +157,14 @@ public class EmployeesController implements Initializable {
                     @Override
                     protected void updateItem(Integer integer, boolean b) {
                         super.updateItem(integer, b);
-
                         if (b) {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            String buttonName = employee.getActive().getValue() ? "Deactivate" : "Activate";
+                            btn.setText(buttonName);
                             btn.setOnAction(event -> {
-                                Employee employee = getTableView().getItems().get(getIndex());
-                                String buttonName = employee.getActive().getValue() ? "Deactivate" : "Activate";
                                 Optional<ButtonType> result = Notification.callAlert(Alert.AlertType.CONFIRMATION,
                                         "Are you sure you want to " + buttonName + " employee?");
                                 if (result.isPresent()) {
@@ -189,7 +185,6 @@ public class EmployeesController implements Initializable {
                                 }
                             });
                             setGraphic(btn);
-                            setText(null);
                         }
                     }
                 };

@@ -35,6 +35,7 @@ public class Employee {
         this.setEmployeeNumber(dto.getEmployeeNumber());
         this.setId(dto.getId());
         this.setContactNumber(dto.getContactNumber());
+        this.setActive(dto.getActive());
     }
 
     public ObjectProperty<EmployeeCompensation> getEmployeeCompensation() {
