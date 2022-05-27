@@ -32,8 +32,13 @@ public class EmployeeService extends HttpService<EmployeeDto> {
         }
     }
 
-    public ObservableList<Employee> getEmployees() throws UnirestException {
-        HttpResponse<JsonNode> response = Unirest.get(getUrl()).asJson();
+    public ObservableList<Employee> getEmployees(boolean queryAll) throws UnirestException {
+        HttpResponse<JsonNode> response;
+        if (queryAll) {
+            response = Unirest.get(getUrl()).queryString("queryAll", "true").asJson();
+        } else {
+            response = Unirest.get(getUrl()).asJson();
+        }
         if (response.getStatus() == 200) {
             ApiResponse<List<EmployeeDto>> employeeDtos = new Gson().fromJson(response.getBody().toString(), ApiResponseTokenHelper.EMPLOYEE_LIST);
             List<Employee> employees = employeeDtos.getBody().stream().map(Employee::new).collect(Collectors.toList());

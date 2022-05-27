@@ -15,8 +15,9 @@ public class EmployeeDto {
     private String address;
     private String contactNumber;
     private String birthday;
+    private boolean active;
 
-    public EmployeeDto(String firstName, String lastName, int employeeNumber, String address, String contactNumber, String birthday, int id) {
+    public EmployeeDto(String firstName, String lastName, int employeeNumber, String address, String contactNumber, String birthday, int id, boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
@@ -24,6 +25,7 @@ public class EmployeeDto {
         this.contactNumber = contactNumber;
         this.birthday = birthday;
         this.id = id;
+        this.active = active;
     }
 
     public EmployeeDto(Employee employee) {
@@ -34,6 +36,15 @@ public class EmployeeDto {
         this.address = employee.getAddress().getValue();
         this.contactNumber = employee.getContactNumber().getValue();
         this.birthday = employee.getBirthday().getValue();
+        this.active = employee.getActive().getValue();
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public int getId() {

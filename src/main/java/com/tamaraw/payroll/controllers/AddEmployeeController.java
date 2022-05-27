@@ -80,7 +80,8 @@ public class AddEmployeeController implements Initializable {
                 this.address.getText(),
                 this.contactNumber.getText(),
                 this.birthday.getEditor().getText(),
-                employeeId.equals("create") ? 0 : Integer.parseInt(employeeId)
+                employeeId.equals("create") ? 0 : Integer.parseInt(employeeId),
+                true
         );
         dto.setParsedBirthday(this.birthday.getEditor().getText());
         try {

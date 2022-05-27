@@ -54,11 +54,18 @@ public class EmployeesController implements Initializable {
     @FXML
     private TableColumn<Employee, Integer> tableColumnDeleteBtn;
 
+    @FXML
+    private MenuItem queryAllMenu;
+
     private EmployeeService employeeService;
+
+    private boolean queryAll;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.employeeService = new EmployeeService();
+        this.queryAll = false;
+        this.queryAllMenu.setText("Show all employees");
         try {
             initializeTable();
         } catch (UnirestException e) {
@@ -82,12 +89,28 @@ public class EmployeesController implements Initializable {
     }
 
     @FXML
+    public void onQueryAllMenuClicked() throws UnirestException {
+        this.queryAll = !this.queryAll;
+        if (this.queryAll) {
+            this.queryAllMenu.setText("Show all employees");
+        } else {
+            this.queryAllMenu.setText("Hide inactive employees");
+        }
+        initializeTable();
+    }
+
+    @FXML
     public void onCompensationSettingsClicked() throws IOException {
         SceneLoader.loadScene((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.EMPLOYEE_COMPENSATION);
     }
 
     private void initializeTable() throws UnirestException {
-        ObservableList<Employee> employees = employeeService.getEmployees();
+        ObservableList<Employee> employees;
+        if (this.queryAll) {
+            employees = employeeService.getEmployees(true);
+        } else {
+            employees = employeeService.getEmployees(false);
+        }
         this.tableColumnId.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnEmployeeNumber.setCellValueFactory(d -> d.getValue().getEmployeeNumber().asObject());
         this.tableColumnFirstName.setCellValueFactory(d -> d.getValue().getFirstName());
@@ -138,19 +161,21 @@ public class EmployeesController implements Initializable {
                     @Override
                     protected void updateItem(Integer integer, boolean b) {
                         super.updateItem(integer, b);
+
                         if (b) {
                             setGraphic(null);
                             setText(null);
                         } else {
                             btn.setOnAction(event -> {
                                 Employee employee = getTableView().getItems().get(getIndex());
+                                String buttonName = employee.getActive().getValue() ? "Deactivate" : "Activate";
                                 Optional<ButtonType> result = Notification.callAlert(Alert.AlertType.CONFIRMATION,
-                                        "Are you sure you want to delete employee?");
+                                        "Are you sure you want to " + buttonName + " employee?");
                                 if (result.isPresent()) {
                                     if (result.get().equals(ButtonType.OK)) {
                                         try {
                                             employeeService.delete((long) employee.getId().getValue());
-                                            Notification.toast("Successfully deleted", this.getTableView());
+                                            Notification.toast("Successful", this.getTableView());
                                         } catch (UnirestException e) {
                                             Notification.toast(e.getMessage(), this.getTableView());
                                         }

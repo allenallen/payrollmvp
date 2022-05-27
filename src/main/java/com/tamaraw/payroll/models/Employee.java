@@ -17,6 +17,7 @@ public class Employee {
     private StringProperty birthday = new SimpleStringProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
     private ObjectProperty<EmployeeCompensation> employeeCompensation = new SimpleObjectProperty<>();
+    private BooleanProperty active = new SimpleBooleanProperty();
 
     public Employee(EmployeeDto dto) {
         this.setFirstName(dto.getFirstName());
@@ -42,6 +43,14 @@ public class Employee {
 
     public void setEmployeeCompensation(EmployeeCompensation employeeCompensation) {
         this.employeeCompensation.set(employeeCompensation);
+    }
+
+    public void setActive(boolean active) {
+        this.active.set(active);
+    }
+
+    public BooleanProperty getActive() {
+        return active;
     }
 
     public StringProperty getFirstName() {

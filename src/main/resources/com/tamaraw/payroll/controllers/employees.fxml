@@ -33,6 +33,7 @@
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onAddEmployeeMenuItemClicked" text="Add Employee" />
+                  <MenuItem fx:id="queryAllMenu" mnemonicParsing="false" onAction="#onQueryAllMenuClicked" text="Query All" />
             </items>
           </Menu>
         </menus>
