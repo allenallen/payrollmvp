@@ -4,15 +4,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.models.EmployeeDto;
 import com.tamaraw.payroll.services.EmployeeService;
-import com.tamaraw.payroll.utils.Notification;
-import com.tamaraw.payroll.utils.SceneLoader;
-import com.tamaraw.payroll.utils.Scenes;
+import com.tamaraw.payroll.utils.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -20,10 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddEmployeeController implements Initializable {
-
-    @FXML
-    private Label employeeIdLabel;
+public class AddEmployeeController implements Initializable, InitializableId {
 
     @FXML
     private TextField firstName;
@@ -45,11 +39,18 @@ public class AddEmployeeController implements Initializable {
 
     private EmployeeService employeeService;
 
+    private Long id;
+
+    @Override
+    public void initId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.employeeService = new EmployeeService();
-        String id = employeeIdLabel.getText();
-        if (!id.equals("create")) {
+        this.id = IDHolder.getInstance().getId();
+        if (id > 0) {
             Employee employee = null;
             try {
                 employee = employeeService.getEmployee(Long.valueOf(id));
@@ -72,7 +73,6 @@ public class AddEmployeeController implements Initializable {
 
     @FXML
     public void onSaveClick(ActionEvent event) throws IOException {
-        String employeeId = this.employeeIdLabel.getText();
         EmployeeDto dto = new EmployeeDto(
                 this.firstName.getText(),
                 this.lastName.getText(),
@@ -80,13 +80,12 @@ public class AddEmployeeController implements Initializable {
                 this.address.getText(),
                 this.contactNumber.getText(),
                 this.birthday.getEditor().getText(),
-                employeeId.equals("create") ? 0 : Integer.parseInt(employeeId),
+                Integer.parseInt(String.valueOf(id)),
                 true
         );
         dto.setParsedBirthday(this.birthday.getEditor().getText());
         try {
-            System.out.println(employeeId);
-            if (employeeId.equals("create")) {
+            if (id < 0) {
                 try {
                     employeeService.create(dto);
                     SceneLoader.loadScene((Stage) ((Node) event.getSource()).getScene().getWindow(), Scenes.EMPLOYEES);

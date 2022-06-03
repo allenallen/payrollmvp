@@ -16,5 +16,6 @@ public class ApiResponseTokenHelper {
     public static Type EMPLOYEE_COMPENSATION = new TypeToken<ApiResponse<EmployeeCompensationDto>>(){}.getType();
     public static Type DEDUCTION_TYPE_LIST = new TypeToken<ApiResponse<List<DeductionTypeDto>>>(){}.getType();
     public static Type DEDUCTION_TYPE = new TypeToken<ApiResponse<DeductionTypeDto>>(){}.getType();
-
+    public static Type INCOME_SETTINGS = new TypeToken<ApiResponse<IncomeSettingsDto>>(){}.getType();
+    public static Type INCOME_SETTINGS_LIST = new TypeToken<ApiResponse<List<IncomeSettingsDto>>>(){}.getType();
 }

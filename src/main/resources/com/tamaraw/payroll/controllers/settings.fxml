@@ -14,7 +14,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </Button>
-      <Button mnemonicParsing="false" prefWidth="250.0" text="Button">
+      <Button mnemonicParsing="false" onAction="#onIncomeSettingsClicked" prefWidth="250.0" text="Income Settings">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>

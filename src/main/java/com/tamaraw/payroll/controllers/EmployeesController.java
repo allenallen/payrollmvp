@@ -1,7 +1,6 @@
 package com.tamaraw.payroll.controllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.tamaraw.payroll.HelloApplication;
 import com.tamaraw.payroll.models.Employee;
 import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.Notification;
@@ -10,10 +9,8 @@ import com.tamaraw.payroll.utils.Scenes;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -34,7 +31,7 @@ public class EmployeesController implements Initializable {
     private TableColumn<Employee, String> tableColumnLastName;
 
     @FXML
-    private TableColumn<Employee, Integer> tableColumnId;
+    private TableColumn<Employee, Long> tableColumnId;
 
     @FXML
     private TableColumn<Employee, Integer> tableColumnEmployeeNumber;
@@ -49,10 +46,10 @@ public class EmployeesController implements Initializable {
     private TableColumn<Employee, String> tableColumnBirthday;
 
     @FXML
-    private TableColumn<Employee, Integer> tableColumnEditBtn;
+    private TableColumn<Employee, Long> tableColumnEditBtn;
 
     @FXML
-    private TableColumn<Employee, Integer> tableColumnDeleteBtn;
+    private TableColumn<Employee, Long> tableColumnDeleteBtn;
 
     @FXML
     private MenuItem queryAllMenu;
@@ -76,16 +73,12 @@ public class EmployeesController implements Initializable {
 
     @FXML
     public void onCloseMenuItemClicked(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("controllers/main.fxml"));
-        Stage mainStage = (Stage) this.tableViewEmployees.getScene().getWindow();
-        mainStage.setResizable(false);
-        mainStage.setTitle("Main");
-        mainStage.setScene(new Scene(fxmlLoader.load()));
+        SceneLoader.loadScene((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.MAIN);
     }
 
     @FXML
     public void onAddEmployeeMenuItemClicked() throws IOException {
-        SceneLoader.loadSceneWithId((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.ADD_EMPLOYEES, "employeeId", "create");
+        SceneLoader.loadSceneWithId((Stage) this.tableViewEmployees.getScene().getWindow(), Scenes.ADD_EMPLOYEES, "create");
     }
 
     @FXML
@@ -117,14 +110,14 @@ public class EmployeesController implements Initializable {
         this.tableColumnEditBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnDeleteBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
 
-        Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>> editCallBack = new Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>>() {
+        Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> editCallBack = new Callback<>() {
             @Override
-            public TableCell<Employee, Integer> call(TableColumn<Employee, Integer> employeeIntegerTableColumn) {
-                final TableCell<Employee, Integer> cell = new TableCell<>() {
+            public TableCell<Employee, Long> call(TableColumn<Employee, Long> employeeIntegerTableColumn) {
+                final TableCell<Employee, Long> cell = new TableCell<>() {
                     final Button btn = new Button("Edit");
 
                     @Override
-                    protected void updateItem(Integer integer, boolean b) {
+                    protected void updateItem(Long integer, boolean b) {
                         super.updateItem(integer, b);
                         if (b) {
                             setGraphic(null);
@@ -134,7 +127,7 @@ public class EmployeesController implements Initializable {
                                 Employee employee = getTableView().getItems().get(getIndex());
                                 try {
                                     SceneLoader.loadSceneWithId((Stage) ((Node) event.getSource()).getScene().getWindow(),
-                                            Scenes.ADD_EMPLOYEES, "employeeId", employee.getId().getValue());
+                                            Scenes.ADD_EMPLOYEES, employee.getId().getValue());
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -148,14 +141,14 @@ public class EmployeesController implements Initializable {
             }
         };
 
-        Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>> deleteCallBack = new Callback<>() {
+        Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> deleteCallBack = new Callback<>() {
             @Override
-            public TableCell<Employee, Integer> call(TableColumn<Employee, Integer> employeeIntegerTableColumn) {
-                final TableCell<Employee, Integer> cell = new TableCell<>() {
+            public TableCell<Employee, Long> call(TableColumn<Employee, Long> employeeIntegerTableColumn) {
+                return new TableCell<>() {
                     final Button btn = new Button("Delete");
 
                     @Override
-                    protected void updateItem(Integer integer, boolean b) {
+                    protected void updateItem(Long integer, boolean b) {
                         super.updateItem(integer, b);
                         if (b) {
                             setGraphic(null);
@@ -188,7 +181,6 @@ public class EmployeesController implements Initializable {
                         }
                     }
                 };
-                return cell;
             }
         };
 

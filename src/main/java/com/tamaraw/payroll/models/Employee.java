@@ -15,7 +15,7 @@ public class Employee {
     private StringProperty address = new SimpleStringProperty();
     private IntegerProperty employeeNumber = new SimpleIntegerProperty();
     private StringProperty birthday = new SimpleStringProperty();
-    private IntegerProperty id = new SimpleIntegerProperty();
+    private LongProperty id = new SimpleLongProperty();
     private ObjectProperty<EmployeeCompensation> employeeCompensation = new SimpleObjectProperty<>();
     private BooleanProperty active = new SimpleBooleanProperty();
 
@@ -102,11 +102,11 @@ public class Employee {
         this.birthday.set(birthday);
     }
 
-    public IntegerProperty getId() {
+    public LongProperty getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id.set(id);
     }
 }

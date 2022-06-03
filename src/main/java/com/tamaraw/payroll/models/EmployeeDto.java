@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class EmployeeDto {
 
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private int employeeNumber;
@@ -47,7 +47,7 @@ public class EmployeeDto {
         this.active = active;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
