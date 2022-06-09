@@ -2,6 +2,9 @@ package com.tamaraw.payroll.controllers;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tamaraw.payroll.models.Employee;
+import com.tamaraw.payroll.models.EmployeeDeductionsTotal;
+import com.tamaraw.payroll.models.EmployeeDeductionsTotalDto;
+import com.tamaraw.payroll.services.EmployeeDeductionsService;
 import com.tamaraw.payroll.services.EmployeeService;
 import com.tamaraw.payroll.utils.Notification;
 import com.tamaraw.payroll.utils.SceneLoader;
@@ -12,11 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -37,13 +42,7 @@ public class EmployeesController implements Initializable {
     private TableColumn<Employee, Integer> tableColumnEmployeeNumber;
 
     @FXML
-    private TableColumn<Employee, String> tableColumnAddress;
-
-    @FXML
-    private TableColumn<Employee, String> tableColumnContactNumber;
-
-    @FXML
-    private TableColumn<Employee, String> tableColumnBirthday;
+    private TableColumn<Employee, EmployeeDeductionsTotal> tableColumnDeductions;
 
     @FXML
     private TableColumn<Employee, Long> tableColumnEditBtn;
@@ -56,11 +55,14 @@ public class EmployeesController implements Initializable {
 
     private EmployeeService employeeService;
 
+    private EmployeeDeductionsService employeeDeductionsService;
+
     private boolean queryAll;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.employeeService = new EmployeeService();
+        this.employeeDeductionsService = new EmployeeDeductionsService();
         this.queryAll = false;
         this.queryAllMenu.setText("Show all employees");
         try {
@@ -100,15 +102,25 @@ public class EmployeesController implements Initializable {
     private void initializeTable() throws UnirestException {
         ObservableList<Employee> employees;
         employees = employeeService.getEmployees(this.queryAll);
+        List<EmployeeDeductionsTotalDto> employeeDeductionsTotal = employeeDeductionsService.getAllDeductions();
+        mapDeductions(employees, employeeDeductionsTotal);
+
         this.tableColumnId.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnEmployeeNumber.setCellValueFactory(d -> d.getValue().getEmployeeNumber().asObject());
         this.tableColumnFirstName.setCellValueFactory(d -> d.getValue().getFirstName());
         this.tableColumnLastName.setCellValueFactory(d -> d.getValue().getLastName());
-        this.tableColumnAddress.setCellValueFactory(d -> d.getValue().getAddress());
-        this.tableColumnContactNumber.setCellValueFactory(d -> d.getValue().getContactNumber());
-        this.tableColumnBirthday.setCellValueFactory(d -> d.getValue().getBirthday());
+        this.tableColumnDeductions.setCellValueFactory(d -> d.getValue().getEmployeeDeductions());
         this.tableColumnEditBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnDeleteBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
+
+        Callback<TableColumn<Employee, EmployeeDeductionsTotal>, TableCell<Employee, EmployeeDeductionsTotal>> deductionsCallBack = new Callback<>() {
+            @Override
+            public TableCell<Employee, EmployeeDeductionsTotal> call(TableColumn<Employee, EmployeeDeductionsTotal> param) {
+                return new TableCell<>() {
+                    final VBox vBox = new VBox();
+                }
+            }
+        };
 
         Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> editCallBack = new Callback<>() {
             @Override
@@ -188,5 +200,14 @@ public class EmployeesController implements Initializable {
         this.tableColumnDeleteBtn.setCellFactory(deleteCallBack);
 
         this.tableViewEmployees.setItems(employees);
+    }
+
+    private void mapDeductions(ObservableList<Employee> employees, List<EmployeeDeductionsTotalDto> employeeDeductionsTotal) {
+        employees.forEach(employee -> {
+            employeeDeductionsTotal.stream().filter(employeeDeductionsTotalDto -> employeeDeductionsTotalDto.getEmployee().getId() ==
+                    employee.getId().getValue()).findFirst().ifPresent(employeeDeductionsTotalDto -> {
+                        employee.setEmployeeDeductions(new EmployeeDeductionsTotal(employeeDeductionsTotalDto.getTotal().doubleValue()));
+            });
+        });
     }
 }

@@ -18,6 +18,7 @@ public class Employee {
     private LongProperty id = new SimpleLongProperty();
     private ObjectProperty<EmployeeCompensation> employeeCompensation = new SimpleObjectProperty<>();
     private BooleanProperty active = new SimpleBooleanProperty();
+    private ObjectProperty<EmployeeDeductionsTotal> employeeDeductions = new SimpleObjectProperty<>();
 
     public Employee(EmployeeDto dto) {
         this.setFirstName(dto.getFirstName());
@@ -36,6 +37,14 @@ public class Employee {
         this.setId(dto.getId());
         this.setContactNumber(dto.getContactNumber());
         this.setActive(dto.getActive());
+    }
+
+    public ObjectProperty<EmployeeDeductionsTotal> getEmployeeDeductions() {
+        return employeeDeductions;
+    }
+
+    public void setEmployeeDeductions(EmployeeDeductionsTotal employeeDeductions) {
+        this.employeeDeductions.set(employeeDeductions);
     }
 
     public ObjectProperty<EmployeeCompensation> getEmployeeCompensation() {
