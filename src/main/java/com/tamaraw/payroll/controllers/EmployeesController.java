@@ -13,6 +13,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -113,20 +115,136 @@ public class EmployeesController implements Initializable {
         this.tableColumnEditBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
         this.tableColumnDeleteBtn.setCellValueFactory(d -> d.getValue().getId().asObject());
 
+        Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> idCallBack = new Callback<>() {
+            @Override
+            public TableCell<Employee, Long> call(TableColumn<Employee, Long> param) {
+                return new TableCell<>() {
+                    final VBox vBox = new VBox();
+
+                    @Override
+                    protected void updateItem(Long id, boolean b) {
+                        super.updateItem(id, b);
+                        if (b) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Label totalAmountLabel = new Label(employee.getId().getValue().toString());
+                            vBox.getChildren().add(totalAmountLabel);
+                            setGraphic(vBox);
+                        }
+                    }
+                };
+            }
+        };
+        Callback<TableColumn<Employee, String>, TableCell<Employee, String>> firstNameCallBack = new Callback<>() {
+            @Override
+            public TableCell<Employee, String> call(TableColumn<Employee, String> param) {
+                return new TableCell<>() {
+                    final VBox vBox = new VBox();
+
+                    @Override
+                    protected void updateItem(String firstName, boolean b) {
+                        super.updateItem(firstName, b);
+                        if (b) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Label totalAmountLabel = new Label(employee.getFirstName().getValue());
+                            vBox.getChildren().add(totalAmountLabel);
+                            setGraphic(vBox);
+                        }
+                    }
+                };
+            }
+        };
+        Callback<TableColumn<Employee, String>, TableCell<Employee, String>> lastNameCallBack = new Callback<>() {
+            @Override
+            public TableCell<Employee, String> call(TableColumn<Employee, String> param) {
+                return new TableCell<>() {
+                    final VBox vBox = new VBox();
+
+                    @Override
+                    protected void updateItem(String firstName, boolean b) {
+                        super.updateItem(firstName, b);
+                        if (b) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Label totalAmountLabel = new Label(employee.getLastName().getValue());
+                            vBox.getChildren().add(totalAmountLabel);
+                            setGraphic(vBox);
+                        }
+                    }
+                };
+            }
+        };
+        Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>> employeeNumberCallBack = new Callback<>() {
+            @Override
+            public TableCell<Employee, Integer> call(TableColumn<Employee, Integer> param) {
+                return new TableCell<>() {
+                    final VBox vBox = new VBox();
+
+                    @Override
+                    protected void updateItem(Integer firstName, boolean b) {
+                        super.updateItem(firstName, b);
+                        if (b) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Label totalAmountLabel = new Label(employee.getEmployeeNumber().getValue().toString());
+                            vBox.getChildren().add(totalAmountLabel);
+                            setGraphic(vBox);
+                        }
+                    }
+                };
+            }
+        };
         Callback<TableColumn<Employee, EmployeeDeductionsTotal>, TableCell<Employee, EmployeeDeductionsTotal>> deductionsCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, EmployeeDeductionsTotal> call(TableColumn<Employee, EmployeeDeductionsTotal> param) {
                 return new TableCell<>() {
                     final VBox vBox = new VBox();
-                }
+
+                    @Override
+                    protected void updateItem(EmployeeDeductionsTotal employeeDeductionsTotal, boolean b) {
+                        super.updateItem(employeeDeductionsTotal, b);
+                        if (b) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Label totalAmountLabel = new Label(employeeDeductionsTotal.getTotalAmount().getValue().toString());
+                            Button viewDeductionsBtn = new Button("View");
+                            viewDeductionsBtn.setOnAction(event -> {
+                                Employee employee = getTableView().getItems().get(getIndex());
+                                System.out.println(employee.getId());
+                            });
+                            vBox.getChildren().add(totalAmountLabel);
+                            vBox.getChildren().add(viewDeductionsBtn);
+                            setGraphic(vBox);
+                        }
+                    }
+                };
             }
         };
-
         Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> editCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Long> call(TableColumn<Employee, Long> employeeIntegerTableColumn) {
                 final TableCell<Employee, Long> cell = new TableCell<>() {
-                    final Button btn = new Button("Edit");
+                    final VBox vBox = new VBox();
 
                     @Override
                     protected void updateItem(Long integer, boolean b) {
@@ -135,6 +253,9 @@ public class EmployeesController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
+                            Button btn = new Button("Edit");
                             btn.setOnAction(event -> {
                                 Employee employee = getTableView().getItems().get(getIndex());
                                 try {
@@ -144,7 +265,8 @@ public class EmployeesController implements Initializable {
                                     throw new RuntimeException(e);
                                 }
                             });
-                            setGraphic(btn);
+                            vBox.getChildren().add(btn);
+                            setGraphic(vBox);
                             setText(null);
                         }
                     }
@@ -152,12 +274,11 @@ public class EmployeesController implements Initializable {
                 return cell;
             }
         };
-
         Callback<TableColumn<Employee, Long>, TableCell<Employee, Long>> deleteCallBack = new Callback<>() {
             @Override
             public TableCell<Employee, Long> call(TableColumn<Employee, Long> employeeIntegerTableColumn) {
                 return new TableCell<>() {
-                    final Button btn = new Button("Delete");
+                    final VBox vBox = new VBox();
 
                     @Override
                     protected void updateItem(Long integer, boolean b) {
@@ -166,9 +287,11 @@ public class EmployeesController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            vBox.setAlignment(Pos.CENTER);
+                            vBox.setPadding(new Insets(10));
                             Employee employee = getTableView().getItems().get(getIndex());
                             String buttonName = employee.getActive().getValue() ? "Deactivate" : "Activate";
-                            btn.setText(buttonName);
+                            Button btn = new Button(buttonName);
                             btn.setOnAction(event -> {
                                 Optional<ButtonType> result = Notification.callAlert(Alert.AlertType.CONFIRMATION,
                                         "Are you sure you want to " + buttonName + " employee?");
@@ -189,7 +312,8 @@ public class EmployeesController implements Initializable {
                                     }
                                 }
                             });
-                            setGraphic(btn);
+                            vBox.getChildren().add(btn);
+                            setGraphic(vBox);
                         }
                     }
                 };
@@ -198,6 +322,11 @@ public class EmployeesController implements Initializable {
 
         this.tableColumnEditBtn.setCellFactory(editCallBack);
         this.tableColumnDeleteBtn.setCellFactory(deleteCallBack);
+        this.tableColumnDeductions.setCellFactory(deductionsCallBack);
+        this.tableColumnId.setCellFactory(idCallBack);
+        this.tableColumnFirstName.setCellFactory(firstNameCallBack);
+        this.tableColumnLastName.setCellFactory(lastNameCallBack);
+        this.tableColumnEmployeeNumber.setCellFactory(employeeNumberCallBack);
 
         this.tableViewEmployees.setItems(employees);
     }
@@ -206,7 +335,7 @@ public class EmployeesController implements Initializable {
         employees.forEach(employee -> {
             employeeDeductionsTotal.stream().filter(employeeDeductionsTotalDto -> employeeDeductionsTotalDto.getEmployee().getId() ==
                     employee.getId().getValue()).findFirst().ifPresent(employeeDeductionsTotalDto -> {
-                        employee.setEmployeeDeductions(new EmployeeDeductionsTotal(employeeDeductionsTotalDto.getTotal().doubleValue()));
+                employee.setEmployeeDeductions(new EmployeeDeductionsTotal(employeeDeductionsTotalDto.getTotal().doubleValue()));
             });
         });
     }

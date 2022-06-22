@@ -8,22 +8,20 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="512.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tamaraw.payroll.controllers.EmployeesController">
+<AnchorPane prefHeight="512.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tamaraw.payroll.controllers.EmployeesController">
    <children>
-      <TableView fx:id="tableViewEmployees" editable="true" layoutX="14.0" layoutY="26.0" prefHeight="426.0" prefWidth="728.0">
+      <TableView fx:id="tableViewEmployees" editable="true" layoutX="14.0" layoutY="26.0" prefHeight="426.0" prefWidth="608.0">
          <columns>
             <TableColumn fx:id="tableColumnId" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="tableColumnFirstName" prefWidth="75.0" text="First Name" />
             <TableColumn fx:id="tableColumnLastName" prefWidth="75.0" text="Last Name" />
             <TableColumn fx:id="tableColumnEmployeeNumber" prefWidth="75.0" text="Employee #" />
-            <TableColumn fx:id="tableColumnContactNumber" prefWidth="87.0" text="Contact #" />
-            <TableColumn fx:id="tableColumnAddress" prefWidth="84.0" text="Address" />
-            <TableColumn fx:id="tableColumnBirthday" prefWidth="75.0" text="Birthday" />
-            <TableColumn fx:id="tableColumnEditBtn" editable="false" prefWidth="60.0" sortable="false" />
-            <TableColumn fx:id="tableColumnDeleteBtn" prefWidth="121.0" />
+            <TableColumn fx:id="tableColumnDeductions" prefWidth="102.0" text="Deductions" />
+            <TableColumn fx:id="tableColumnEditBtn" editable="false" prefWidth="82.0" sortable="false" />
+            <TableColumn fx:id="tableColumnDeleteBtn" prefWidth="123.0" />
          </columns>
       </TableView>
-      <MenuBar layoutX="14.0" layoutY="2.0" prefHeight="28.0" prefWidth="728.0">
+      <MenuBar layoutX="14.0" layoutY="2.0" prefHeight="28.0" prefWidth="608.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -38,6 +36,6 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="579.0" layoutY="463.0" mnemonicParsing="false" onAction="#onCompensationSettingsClicked" prefHeight="35.0" prefWidth="162.0" text="Compensation Settings" />
+      <Button layoutX="446.0" layoutY="463.0" mnemonicParsing="false" onAction="#onCompensationSettingsClicked" prefHeight="35.0" prefWidth="162.0" text="Compensation Settings" />
    </children>
 </AnchorPane>
